@@ -4,6 +4,7 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
@@ -12,46 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# use glob syntax.
-syntax: glob
-*.ser
-*.class
-*~
-*.bak
-#*.off
-*.old
 
-# eclipse conf file
-.settings
-.classpath
-.project
-.manager
-.scala_dependencies
-.scalastyle
+name: License Check
 
-# idea
-.idea
-*.iml
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, reopened ]
 
-# vs code
-.vscode
-.metals/
-.bloop/
-metals.sbt
+jobs:
+  license-check:
+    name: License Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        with:
+          persist-credentials: false
 
-# building
-target
-build
-null
-tmp*
-temp*
-dist
-test-output
-build.log
+      - name: Setup Scala
+        uses: olafurpg/setup-scala@32ffa16635ff8f19cc21ea253a987f0fdf29844c
+        with:
+          java-version: "adopt@1.8"
 
-# other scm
-.svn
-.CVS
-.hg*
-
-.bsp
+      - run: sbt headerCheck
