@@ -156,4 +156,4 @@
 
 # Commented out to reconsider if needed + waiting for jacoco-report bug fix
 
-# za.co.absa.mag.*
+za.co.absa.mag.exceptions
