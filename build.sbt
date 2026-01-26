@@ -22,7 +22,7 @@ lazy val scala213 = "2.13.18"
 
 // Build-wide settings
 ThisBuild / scalaVersion := scala212
-ThisBuild / crossScalaVersions := Seq(scala212, scala213)
+ThisBuild / crossScalaVersions := Seq(scala211, scala212, scala213)
 ThisBuild / versionScheme := Some("early-semver")
 
 // Common compiler options
@@ -40,12 +40,13 @@ ThisBuild / printScalaVersion := {
 lazy val mag = (project in file("mag"))
   .settings(
     name := "mag",
+    crossScalaVersions := Seq(scala211, scala212, scala213),
     libraryDependencies ++= magDependencies,
     javacOptions ++= commonJavacOptions,
     scalacOptions ++= commonScalacOptions,
     (Compile / compile) := ((Compile / compile) dependsOn printScalaVersion).value,
 
-    // Explicitly enable Jacoco
+    // Explicitly enable Jacoco so that coverage report is available
     jacocoPluginEnabled := true
   )
   .enablePlugins(FilteredJacocoAgentPlugin)
