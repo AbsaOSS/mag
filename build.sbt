@@ -13,37 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import Dependencies.*
 
-import Dependencies._
-import com.github.sbt.jacoco.report.JacocoReportSettings
-
+// Scala versions
 lazy val scala211 = "2.11.12"
 lazy val scala212 = "2.12.21"
 lazy val scala213 = "2.13.18"
 
-lazy val supportedScalaVersions: Seq[String] = Seq(scala211, scala212 , scala213)
-
-name := "mag"
-
+// Build-wide settings
 ThisBuild / scalaVersion := scala212
-
+ThisBuild / crossScalaVersions := Seq(scala212, scala213)
 ThisBuild / versionScheme := Some("early-semver")
 
-lazy val commonJacocoReportSettings: JacocoReportSettings = JacocoReportSettings(
-  formats = Seq(JacocoReportFormats.HTML, JacocoReportFormats.XML)
-)
+// Common compiler options
+lazy val commonJavacOptions = Seq("-source", "1.8", "-target", "1.8", "-Xlint")
+lazy val commonScalacOptions = Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
 
-lazy val commonJacocoExcludes: Seq[String] = Seq()
+// Custom task for printing Scala version
+lazy val printScalaVersion = taskKey[Unit]("Print Scala versions Mag is being built for.")
+ThisBuild / printScalaVersion := {
+  val log = streams.value.log
+  log.info(s"Building Mag with Scala ${scalaVersion.value}")
+}
 
+// Main module
 lazy val mag = (project in file("mag"))
   .settings(
     name := "mag",
-    scalacOptions ++= Seq(
-      "-deprecation",
-      "-feature",
-    ),
-    crossScalaVersions := supportedScalaVersions,
-    libraryDependencies ++= libDependencies,
-    jacocoReportSettings := commonJacocoReportSettings.withTitle(s"mag - scala:${scalaVersion.value}"),
-    jacocoExcludes := commonJacocoExcludes
+    libraryDependencies ++= magDependencies,
+    javacOptions ++= commonJavacOptions,
+    scalacOptions ++= commonScalacOptions,
+    (Compile / compile) := ((Compile / compile) dependsOn printScalaVersion).value
+  )
+  .enablePlugins(FilteredJacocoAgentPlugin)
+
+// Root project (aggregates all modules) - a good and common practice even if there is a single module
+// (besides, we might add more later)
+lazy val root = (project in file("."))
+  .aggregate(mag)
+  .settings(
+    name := "mag-root",
+    publish / skip := true
   )

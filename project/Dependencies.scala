@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import sbt._
+import sbt.*
 
 object Dependencies {
 
@@ -21,11 +21,8 @@ object Dependencies {
     val scalatest = "3.2.15"
   }
 
-  def libDependencies: Seq[ModuleID] = {
-    lazy val scalaTest  = "org.scalatest"  %% "scalatest"  % Versions.scalatest
-
-    Seq(
-      scalaTest,
-    )
-  }
+  def magDependencies: Seq[ModuleID] = Seq(
+    // Test dependencies
+    "org.scalatest" %% "scalatest" % Versions.scalatest % Test
+  )
 }
