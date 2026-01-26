@@ -16,13 +16,13 @@
 import Dependencies.*
 
 // Scala versions
-lazy val scala211 = "2.11.12"
+// (note: not supporting 2.11 bcause Jacoco Coverage isn't build for that version; if needed can be addressed and added)
 lazy val scala212 = "2.12.21"
 lazy val scala213 = "2.13.18"
 
 // Build-wide settings
 ThisBuild / scalaVersion := scala212
-ThisBuild / crossScalaVersions := Seq(scala211, scala212, scala213)
+ThisBuild / crossScalaVersions := Seq(scala212, scala213)
 ThisBuild / versionScheme := Some("early-semver")
 
 // Common compiler options
@@ -40,7 +40,7 @@ ThisBuild / printScalaVersion := {
 lazy val mag = (project in file("mag"))
   .settings(
     name := "mag",
-    crossScalaVersions := Seq(scala211, scala212, scala213),
+    crossScalaVersions := Seq(scala212, scala213),
     libraryDependencies ++= magDependencies,
     javacOptions ++= commonJavacOptions,
     scalacOptions ++= commonScalacOptions,
