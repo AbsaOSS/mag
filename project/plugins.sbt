@@ -1,7 +1,25 @@
+/*
+ * Copyright 2026 ABSA Group Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 lazy val sbtCiReleaseVersion = "1.11.2"
+lazy val sbtHeaderVersion = "5.7.0"
 
 lazy val ow2Version = "9.5"
 lazy val jacocoVersion = "0.8.10-absa.1"
+
 val sbtJacocoVersion = "3.4.1-absa.3"
 val scalaArmVersion = "2.0"
 
@@ -10,6 +28,7 @@ def ow2Url(artifactName: String): String = s"https://repo1.maven.org/maven2/org/
 def armUrl(scalaMajor: String): String = s"https://repo1.maven.org/maven2/com/jsuereth/scala-arm_$scalaMajor/$scalaArmVersion/scala-arm_$scalaMajor-$scalaArmVersion.jar"
 
 addSbtPlugin("com.github.sbt" % "sbt-ci-release" % sbtCiReleaseVersion)
+addSbtPlugin("de.heikoseeberger" % "sbt-header" % sbtHeaderVersion)
 
 addSbtPlugin("com.jsuereth" %% "scala-arm" % scalaArmVersion from armUrl("2.11"))
 addSbtPlugin("com.jsuereth" %% "scala-arm" % scalaArmVersion from armUrl("2.12"))
