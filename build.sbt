@@ -43,7 +43,10 @@ lazy val mag = (project in file("mag"))
     libraryDependencies ++= magDependencies,
     javacOptions ++= commonJavacOptions,
     scalacOptions ++= commonScalacOptions,
-    (Compile / compile) := ((Compile / compile) dependsOn printScalaVersion).value
+    (Compile / compile) := ((Compile / compile) dependsOn printScalaVersion).value,
+
+    // Explicitly enable Jacoco
+    jacocoPluginEnabled := true
   )
   .enablePlugins(FilteredJacocoAgentPlugin)
 

@@ -46,5 +46,7 @@ jobs:
         with:
           java-version: "adopt@1.8"
 
+      - run: sbt headerCheck
+
       - name: Build and Run Unit Tests
         run: sbt ++${{matrix.scala}} test doc
