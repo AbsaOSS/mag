@@ -1,0 +1,67 @@
+#
+# Copyright 2026 ABSA Group Limited
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: CI check JaCoCo code-coverage
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ opened, edited, synchronize, reopened ]
+
+env:
+  scalaLong: 2.12.21
+  scalaShort: "2.12"
+  coverage-overall: 80.0
+  coverage-changed-files: 80.0
+  check-overall-coverages: true
+
+jobs:
+  jacoco-report-mag:
+    name: JaCoCo Report on Mag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        with:
+          persist-credentials: false
+
+      - name: Setup Scala
+        uses: olafurpg/setup-scala@32ffa16635ff8f19cc21ea253a987f0fdf29844c
+        with:
+          java-version: "adopt@1.8"
+
+      - name: Build and run tests with test coverage
+        continue-on-error: true
+        id: jacocorun
+        run: sbt jacoco
+
+      - name: Check coverage thresholds and add reports in PR comments
+        id: jacoco
+        uses: MoranaApps/jacoco-report@54bfe284d1119dc917dddba80517c54c5bcf3627
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          paths: |
+            **/target/**/jacoco/report/jacoco.xml
+          exclude-paths: |
+            database/target/**
+          sensitivity: "detail"
+          comment-mode: 'multi'
+          min-coverage-overall: ${{ env.coverage-overall }}
+          min-coverage-changed-files: ${{ env.coverage-changed-files }}
+          title: JaCoCo 'mag' module code coverage report - scala ${{ env.scalaLong }}
+          update-comment: true
+          skip-unchanged: false

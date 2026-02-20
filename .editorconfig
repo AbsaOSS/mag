@@ -11,47 +11,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# use glob syntax.
-syntax: glob
-*.ser
-*.class
-*~
-*.bak
-#*.off
-*.old
 
-# eclipse conf file
-.settings
-.classpath
-.project
-.manager
-.scala_dependencies
-.scalastyle
+# top-most EditorConfig file
+root = true
 
-# idea
-.idea
-*.iml
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
 
-# vs code
-.vscode
-.metals/
-.bloop/
-metals.sbt
+[*.xml]
+indent_size = 4
+indent_style = space
+insert_final_newline = true
 
-# building
-target
-build
-null
-tmp*
-temp*
-dist
-test-output
-build.log
+[*.{java,scala,js,json,css}]
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
 
-# other scm
-.svn
-.CVS
-.hg*
+[*.md]
+trim_trailing_whitespace = false
 
-.bsp
+[*.{cmd,bat}]
+end_of_line = crlf
+insert_final_newline = true
+
+[*.{sql,ddl}]
+indent_size =22
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
